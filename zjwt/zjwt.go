@@ -9,13 +9,7 @@ import (
 	"time"
 )
 
-//go:embed cert/private_key.pem
-var prKeyByteArr []byte
-
-//go:embed cert/public_key.pem
-var pubKeyByteArr []byte
-
-func GenerateToken(hourNum int) (string, error) {
+func GenerateToken(prKeyByteArr []byte, hourNum int) (string, error) {
 	now := time.Now()
 
 	key, err := jwt.ParseRSAPrivateKeyFromPEM(prKeyByteArr)
@@ -38,7 +32,7 @@ func GenerateToken(hourNum int) (string, error) {
 	return token, nil
 }
 
-func ValidateToken(token string) error {
+func ValidateToken(pubKeyByteArr []byte, token string) error {
 	key, err := jwt.ParseRSAPublicKeyFromPEM(pubKeyByteArr)
 	if err != nil {
 		return errors.Join(errors.New("公钥文件加载失败"), err)
