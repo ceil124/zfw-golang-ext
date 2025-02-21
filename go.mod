@@ -1,4 +1,4 @@
-module e.coding.net/fangletianhua/mys/zfw-golang-ext
+module github.com/ceil124/zfw-golang-ext
 
 go 1.23
 
