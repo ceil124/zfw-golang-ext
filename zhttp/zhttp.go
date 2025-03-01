@@ -1,13 +1,13 @@
 package zhttp
 
 import (
+	"bytes"
 	"io"
 	"net/http"
-	"strings"
 )
 
 type HttpConfig struct {
-	Payload  *strings.Reader
+	Payload  []byte
 	Headers  map[string]string
 	Cookies  map[string]string
 	Redirect bool
@@ -112,7 +112,8 @@ func HttpPost(url string, httpConfig HttpConfig) (*http.Response, error) {
 	}
 
 	payload := httpConfig.Payload
-	req, err := http.NewRequest(method, url, payload)
+
+	req, err := http.NewRequest(method, url, bytes.NewBuffer(payload))
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +154,7 @@ func HttpPatch(url string, httpConfig HttpConfig) (*http.Response, error) {
 	}
 
 	payload := httpConfig.Payload
-	req, err := http.NewRequest(method, url, payload)
+	req, err := http.NewRequest(method, url, bytes.NewBuffer(payload))
 	if err != nil {
 		return nil, err
 	}
